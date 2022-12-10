@@ -1,8 +1,11 @@
-package api
+package domain
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestValidaSenha(t *testing.T) {
+// TestRegrasValidaSenha - teste de cada regra da função ValidaSenha
+func TestRegrasValidaSenha(t *testing.T) {
 
 	t.Run("teste Falha minSize", func(t *testing.T) {
 		var senha Senha
@@ -17,7 +20,7 @@ func TestValidaSenha(t *testing.T) {
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != false {
+		if verify {
 			t.Errorf("Esperava um FALSE e veio um %v", verify)
 		}
 		if len(rules) == 0 {
@@ -38,7 +41,7 @@ func TestValidaSenha(t *testing.T) {
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != true {
+		if !verify {
 			t.Errorf("Esperava um TRUE e veio um %v", verify)
 		}
 		if len(rules) > 0 {
@@ -59,7 +62,7 @@ func TestValidaSenha(t *testing.T) {
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != false {
+		if verify {
 			t.Errorf("Esperava um FALSE e veio um %v", verify)
 		}
 		if len(rules) == 0 {
@@ -80,7 +83,7 @@ func TestValidaSenha(t *testing.T) {
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != true {
+		if !verify {
 			t.Errorf("Esperava um TRUE e veio um %v", verify)
 		}
 		if len(rules) > 0 {
@@ -101,7 +104,7 @@ func TestValidaSenha(t *testing.T) {
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != false {
+		if verify {
 			t.Errorf("Esperava um FALSE e veio um %v", verify)
 		}
 		if len(rules) == 0 {
@@ -122,7 +125,7 @@ func TestValidaSenha(t *testing.T) {
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != true {
+		if !verify {
 			t.Errorf("Esperava um TRUE e veio um %v", verify)
 		}
 		if len(rules) > 0 {
@@ -143,7 +146,7 @@ func TestValidaSenha(t *testing.T) {
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != false {
+		if verify {
 			t.Errorf("Esperava um FALSE e veio um %v", verify)
 		}
 		if len(rules) == 0 {
@@ -164,7 +167,7 @@ func TestValidaSenha(t *testing.T) {
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != true {
+		if !verify {
 			t.Errorf("Esperava um TRUE e veio um %v", verify)
 		}
 		if len(rules) > 0 {
@@ -185,7 +188,7 @@ func TestValidaSenha(t *testing.T) {
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != false {
+		if verify {
 			t.Errorf("Esperava um FALSE e veio um %v", verify)
 		}
 		if len(rules) == 0 {
@@ -206,7 +209,7 @@ func TestValidaSenha(t *testing.T) {
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != true {
+		if !verify {
 			t.Errorf("Esperava um TRUE e veio um %v", verify)
 		}
 		if len(rules) > 0 {
@@ -221,13 +224,12 @@ func TestValidaSenha(t *testing.T) {
 		senha.Password = "TEssTE1@"
 
 		rule.Name = "noRepeted"
-		rule.Value = 2
 
 		senha.Rules = append(senha.Rules, rule)
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != false {
+		if verify {
 			t.Errorf("Esperava um FALSE e veio um %v", verify)
 		}
 		if len(rules) == 0 {
@@ -242,13 +244,12 @@ func TestValidaSenha(t *testing.T) {
 		senha.Password = "TETTE1@"
 
 		rule.Name = "noRepeted"
-		rule.Value = 2
 
 		senha.Rules = append(senha.Rules, rule)
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != false {
+		if verify {
 			t.Errorf("Esperava um FALSE e veio um %v", verify)
 		}
 		if len(rules) == 0 {
@@ -263,13 +264,12 @@ func TestValidaSenha(t *testing.T) {
 		senha.Password = "tE1#sTE!"
 
 		rule.Name = "noRepeted"
-		rule.Value = 2
 
 		senha.Rules = append(senha.Rules, rule)
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != true {
+		if !verify {
 			t.Errorf("Esperava um TRUE e veio um %v", verify)
 		}
 		if len(rules) > 0 {
@@ -279,41 +279,45 @@ func TestValidaSenha(t *testing.T) {
 
 }
 
-func TestValidaGeral(t *testing.T) {
-	t.Run("teste Completo", func(t *testing.T) {
+// TestGeralValidaSenha - teste completo da função
+func TestGeralValidaSenha(t *testing.T) {
+	t.Run("teste Completo Fail", func(t *testing.T) {
 		var senha Senha
 		var rule Rule
-		var rule2 Rule
-		var rule3 Rule
-		var rule4 Rule
-		var rule5 Rule
-		var rule6 Rule
+		senha.Password = "tEs21#T!"
 
-		senha.Password = "tE1#TT!"
-
-		rule.Name = "minSize"
-		rule.Value = 6
-		rule2.Name = "minUppercase"
-		rule2.Value = 2
-		rule3.Name = "minLowercase"
-		rule3.Value = 2
-		rule4.Name = "minDigit"
-		rule4.Value = 2
-		rule5.Name = "minSpecialChars"
-		rule5.Value = 2
-		rule6.Name = "noRepeted"
-		//rule6.Value = 0
-
-		senha.Rules = append(senha.Rules, rule)
-		senha.Rules = append(senha.Rules, rule2)
-		senha.Rules = append(senha.Rules, rule3)
-		senha.Rules = append(senha.Rules, rule4)
-		senha.Rules = append(senha.Rules, rule5)
-		senha.Rules = append(senha.Rules, rule6)
+		rules := []string{"noRepeted", "minSize", "minUppercase", "minLowercase", "minDigit", "minSpecialChars"}
+		for i := 0; i < len(rules); i++ {
+			rule.Name = rules[i]
+			rule.Value = i
+			senha.Rules = append(senha.Rules, rule)
+		}
 
 		verify, rules, _ := ValidaSenha(senha)
 
-		if verify != true {
+		if verify {
+			t.Errorf("Esperava um FALSE e veio um %v", verify)
+		}
+		if len(rules) == 0 {
+			t.Errorf("Esperava [minLowercase minDigit minSpecialChars] regra e veio %v", rules)
+		}
+	})
+
+	t.Run("teste Completo OK", func(t *testing.T) {
+		var senha Senha
+		var rule Rule
+		senha.Password = "tEsr21#T!@3%&85"
+		// CARACTERES ESPECIAIS RESERVADOS -$,*,),(,+,?,/,\,^,]
+		rules := []string{"noRepeted", "minSize", "minUppercase", "minLowercase", "minDigit", "minSpecialChars"}
+		for i := 0; i < len(rules); i++ {
+			rule.Name = rules[i]
+			rule.Value = i
+			senha.Rules = append(senha.Rules, rule)
+		}
+
+		verify, rules, _ := ValidaSenha(senha)
+
+		if !verify {
 			t.Errorf("Esperava um TRUE e veio um %v", verify)
 		}
 		if len(rules) > 0 {

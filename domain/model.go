@@ -1,4 +1,4 @@
-package api
+package domain
 
 type Senha struct {
 	Password string `json:"password"`
